@@ -1,10 +1,10 @@
-function registered = RigidReg(ref, srce, other, interpol)
+function registered = RigidReg(ref, srce, reslice, other, interpol)
     %SPMRESCLICE Summary of this function goes here
     %   Detailed explanation goes here
-    if nargin < 2
+    if nargin < 3
         other = [];
     end
-    if nargin < 3
+    if nargin < 4
         interpol = [];
     end
 
@@ -35,9 +35,11 @@ function registered = RigidReg(ref, srce, other, interpol)
 
     spm_jobman('run', matlabbatch);
 
-    for i = 2:numel(files)
-        P = char(refFile, files{i});  % Reference first
-        spm_reslice(P, struct('interp', double(inter(i)), 'mask', 0, 'which', 1, 'mean', 0, 'prefix', ''));
+    if reslice
+        for i = 2:numel(files)
+            P = char(refFile, files{i});  % Reference first
+            spm_reslice(P, struct('interp', double(inter(i)), 'mask', 0, 'which', 1, 'mean', 0, 'prefix', ''));
+        end
     end
     
     registered = files;

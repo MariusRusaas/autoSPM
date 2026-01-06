@@ -4,7 +4,7 @@ import matlab.engine
 import os
 import argparse
 
-def RigidReg(refPath, srcPath, other=None, inter=None, verbose=False):
+def RigidReg(refPath, srcPath, other=None, inter=None, reslice=True, verbose=False):
     """
     Main function to run the RigidReg pipeline.
 
@@ -25,9 +25,9 @@ def RigidReg(refPath, srcPath, other=None, inter=None, verbose=False):
 
     if other is not None:
         others = {othr for othr in other}
-        if inter is not None: resliced = eng.RigidReg(refPath, srcPath, others, np.array(inter))
-        else: resliced = eng.RigidReg(refPath, srcPath, others)
-    else: resliced = eng.RigidReg(refPath, srcPath)
+        if inter is not None: resliced = eng.RigidReg(refPath, srcPath, reslice, others, np.array(inter))
+        else: resliced = eng.RigidReg(refPath, srcPath, reslice, others)
+    else: resliced = eng.RigidReg(refPath, srcPath, reslice)
 
     if verbose: print(f"\n################ Rigid Registration finished! ################  \n")
 
@@ -40,13 +40,15 @@ def main():
     parser.add_argument("--other", type=str, nargs='*', default=None, help="Additional images to co-register (must be in MNI space).")
     parser.add_argument("--inter", type=int, nargs='*', default=None, help="Interpolation method for co-registration of additional images.")
     parser.add_argument("--verbose", action='store_true', help="Enable verbose output.")
+    parser.add_argument("--resliceNot", action='store_false', help="Enable reslicing.")
 
     args = parser.parse_args()
     
     RigidReg(args.refPath, args.srcPath, 
             other=args.other,
             inter=args.inter, 
-            verbose=args.verbose, )
+            verbose=args.verbose, 
+            reslice=args.resliceNot)
 
 
 if __name__ == "__main__":
