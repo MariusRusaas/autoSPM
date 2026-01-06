@@ -11,7 +11,7 @@ def autoSPM(imgPath, ctPath, outputPath=None, filename='Brain', toSpace='MNI', n
     Parameters:
         imgPath (str): Path to the input image file.
         ctPath (str): Path to the CT image file.
-        brainnum (int): Number of brain regions to segment.
+        brainnum (int): Label number of the brain region in the segmentation mask.
         outputPath (str, optional): Path to save the output image. Defaults to None.
         other (optional): Additional imges to co-register (must be in MNI space).
         inter (optional): Interpolation method for co-registration of additional images in other.
